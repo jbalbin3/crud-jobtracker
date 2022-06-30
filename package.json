@@ -1,0 +1,51 @@
+{
+  "name": "crud-jobtracker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server",
+    "start:dev": "nodemon server -i public -i src",
+    "build": "webpack --mode production",
+    "build:dev": "webpack-dev-server --mode development",
+    "mongo": "sudo service mongod start",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jbalbin3/crud-jobtracker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jbalbin3/crud-jobtracker/issues"
+  },
+  "homepage": "https://github.com/jbalbin3/crud-jobtracker#readme",
+  "dependencies": {
+    "@emotion/react": "^11.9.3",
+    "@emotion/styled": "^11.9.3",
+    "@material-ui/core": "^4.12.4",
+    "@mui/material": "^5.8.6",
+    "@types/eslint": "8.4.3",
+    "axios": "^0.27.2",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "jspdf": "^2.5.1",
+    "material-table": "github:eugenia-technology/material-table#master",
+    "material-table-jspdf-fix": "^1.0.2",
+    "mongodb": "^4.7.0",
+    "mongoose": "^6.4.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.18.6",
+    "@babel/preset-env": "^7.18.6",
+    "@babel/preset-react": "^7.18.6",
+    "babel-loader": "^8.2.5",
+    "webpack": "^5.73.0",
+    "webpack-cli": "^4.10.0",
+    "webpack-dev-server": "^4.9.3"
+  }
+}
