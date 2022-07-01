@@ -10,7 +10,6 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 
 const JobList = ({ jobs, addJob, updateJob, deleteJob }) => {
-  // console.log('jobs', jobs);
 
     const [state, setState] = useState({
       columns: [],
@@ -18,62 +17,78 @@ const JobList = ({ jobs, addJob, updateJob, deleteJob }) => {
     });
 
     const [selectedRow, setRow] = useState([]);
-
-    console.log('selectedRow state', selectedRow);
-
     const [open, setOpen] = useState(false);
-
-    console.log('open state', open);
+    const [selectedRows, setSelectedRows] = useState([]);
 
     const handleClose = () => {
         setOpen(false);
         console.log('open?',open);
     };
 
+    const handleBulkDelete = () => {
+      // console.log('state.data',state.data);
+      const updatedData = state.data.filter(row => !selectedRows.includes(row));
+      console.log('updatedData',updatedData);
+     //  setState(state.data = updatedData)
+      // new Promise(resolve => {
+      //   setTimeout(() => {
+      //     resolve();
+      //     setState(prevState => {
+      //       const data = [...prevState.data];
+      //       data.splice(data.indexOf(oldData), 1);
+      //       return { ...prevState, data };
+      //     });
+      //   }, 600);
+      //   // console.log('DELETE', oldData);
+      //   deleteJob(oldData._id);
+      // }),
+    };
+
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
+
+    const renderJobForModal = (job) => {
+        return (
+          <div>
+            <h3>Job Title</h3>
+            {job.job_title}
+            <h3>Job Description</h3>
+            {job.job_description}
+            <h3>Company</h3>
+            {job.company}
+            <h3>Date Applied</h3>
+            {job.date_applied}
+            <h3>Status</h3>
+            {job.status}
+          </div>
+        )
+    }
 
     useEffect(() => {
      setState({
       columns: [
-        { title: 'Job Title', field: 'job_title', validate: rowData => rowData.job_title === '' ? 'Job title cannot be empty' : ''},
-        { title: 'Job Description', field: 'job_description', validate: rowData => rowData.job_description === '' ? 'Job description cannot be empty' : ''},
-        { title: 'Company', field: 'company', validate: rowData => rowData.company === '' ? 'Company cannot be empty' : ''},
-        { title: 'Date applied', field: 'date_applied', type: 'date' , validate: rowData => rowData.date_applied === '' ? 'Date cannot be empty' : ''},
-        { title: 'Status', field: 'status', validate: rowData => rowData.status === '' ? 'Status cannot be empty' : ''},
+        { title: 'Job Title', field: 'job_title', validate: rowData => rowData.job_title === '' || rowData.job_title === undefined ? 'required' : true },
+        { title: 'Job Description', field: 'job_description', validate: rowData => rowData.job_description === '' || rowData.job_description === undefined ? 'required' : true },
+        { title: 'Company', field: 'company', validate: rowData => rowData.company === '' || rowData.company === undefined ? 'required' : true },
+        { title: 'Date applied', field: 'date_applied', type: 'date' , validate: rowData => rowData.date_applied === '' || rowData.date_applied === undefined ? 'Date required' : true},
+        { title: 'Status', field: 'status', lookup: { notApplied: 'not applied', applied: 'applied', interviewed: 'interviewed', offerExtended: 'offer extended'}, validate: rowData => rowData.status === '' || rowData.status === undefined ? 'Status required' : true },
       ],
-    // columns: [
-    //   { title: 'Job Title', field: 'job_title'},
-    //   { title: 'Job Description', field: 'job_description'},
-    //   { title: 'Company', field: 'company',},
-    //   { title: 'Date applied', field: 'date_applied', type: 'date' },
-    //   { title: 'Status', field: 'status' },
-    //   ],
       data: jobs})
       }, [jobs]);
-
-  console.log('state',state.columns);
 
   return (
     <div>
     <MaterialTable
       title="Job Tracker"
-      // columns={[
-      //   { title: 'Job Title', field: 'job_title', validate: rowData => rowData.job_title === '' ? 'Job title cannot be empty' : ''},
-      //   { title: 'Job Description', field: 'job_description', validate: rowData => rowData.job_description === '' ? 'Job description cannot be empty' : ''},
-      //   { title: 'Company', field: 'company', validate: rowData => rowData.company === '' ? 'Company cannot be empty' : ''},
-      //   { title: 'Date applied', field: 'date_applied', type: 'date' , validate: rowData => rowData.date_applied === '' ? 'Date cannot be empty' : ''},
-      //   { title: 'Status', field: 'status', validate: rowData => rowData.status === '' ? 'Status cannot be empty' : ''},
-      // ]}
+
       columns={state.columns}
       data={state.data}
       onRowClick={(event, rowData) => {
-          console.log('event', event);
-          console.log('rowData', rowData);
           setRow(rowData);
           setOpen(true);
         }
       }
+      onSelectionChange = {(rows) => setSelectedRows(rows)}
       options={{
         pageSize:10,
         pageSizeOptions: [10, 20, 30],
@@ -81,14 +96,16 @@ const JobList = ({ jobs, addJob, updateJob, deleteJob }) => {
           backgroundColor: '#447eab',
           color: '#FFF'
         },
+        actionsColumnIndex: -1,
+        selection: true
       }}
-      // actions={[
-      //   {
-      //     onClick: (event, rowData) => {
-
-      //     }
-      //   }
-      // ]}
+      actions={[
+        {
+          icon: 'delete',
+          tooltip: "Delete selected rows",
+          onClick: () => handleBulkDelete()
+        }
+      ]}
       editable={{
         onRowAdd: newData =>
           new Promise(resolve => {
@@ -144,7 +161,7 @@ const JobList = ({ jobs, addJob, updateJob, deleteJob }) => {
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
-           {JSON.stringify(selectedRow)}
+           {renderJobForModal(selectedRow)}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
