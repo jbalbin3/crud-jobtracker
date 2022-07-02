@@ -18,8 +18,10 @@ browse to localhost:4444
 
 To add a job:
 >click on the + icon on top right
+>
 To view a job:
 >click on job row
+>
 To edit or delete a job: 
 >click on icons on the right corresponding to the desired action
 
