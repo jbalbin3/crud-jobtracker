@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import MaterialTable from 'material-table';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -8,6 +9,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
+
 
 const JobList = ({ jobs, addJob, updateJob, deleteJob }) => {
 
@@ -22,26 +24,22 @@ const JobList = ({ jobs, addJob, updateJob, deleteJob }) => {
 
     const handleClose = () => {
         setOpen(false);
-        console.log('open?',open);
     };
 
     const handleBulkDelete = () => {
-      // console.log('state.data',state.data);
-      const updatedData = state.data.filter(row => !selectedRows.includes(row));
-      console.log('updatedData',updatedData);
-     //  setState(state.data = updatedData)
-      // new Promise(resolve => {
-      //   setTimeout(() => {
-      //     resolve();
-      //     setState(prevState => {
-      //       const data = [...prevState.data];
-      //       data.splice(data.indexOf(oldData), 1);
-      //       return { ...prevState, data };
-      //     });
-      //   }, 600);
-      //   // console.log('DELETE', oldData);
-      //   deleteJob(oldData._id);
-      // }),
+      // create an list of ids to delete
+      const ids = selectedRows.map((job) => { return job._id; });
+
+      axios.post(`/api/deletejobs/`, ids)
+      .then(()=>{
+        setState(prevState => {
+          const updatedData = prevState.data.filter(row => !selectedRows.includes(row));
+          return { columns: prevState.columns, data: updatedData };
+        });
+      })
+      .catch((err)=>{
+        console.error('axios error deleting jobs', err);
+      })
     };
 
     const theme = useTheme();
@@ -57,7 +55,7 @@ const JobList = ({ jobs, addJob, updateJob, deleteJob }) => {
             <h3>Company</h3>
             {job.company}
             <h3>Date Applied</h3>
-            {job.date_applied}
+            job.date_applied
             <h3>Status</h3>
             {job.status}
           </div>
@@ -117,7 +115,6 @@ const JobList = ({ jobs, addJob, updateJob, deleteJob }) => {
                 return { ...prevState, data };
               });
             }, 600);
-            // console.log('new DATA', newData);
             addJob(newData);
           }),
         onRowUpdate: (newData, oldData) =>
@@ -132,7 +129,6 @@ const JobList = ({ jobs, addJob, updateJob, deleteJob }) => {
                 });
               }
             }, 600);
-            // console.log('UPDATE', newData);
             updateJob(newData)
           }),
         onRowDelete: oldData =>
@@ -145,7 +141,6 @@ const JobList = ({ jobs, addJob, updateJob, deleteJob }) => {
                 return { ...prevState, data };
               });
             }, 600);
-            // console.log('DELETE', oldData);
             deleteJob(oldData._id);
           }),
       }}

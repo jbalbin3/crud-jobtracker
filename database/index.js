@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const jobSchema = require('./schema.js');
-// mongoose.set('useFindAndModify', false);
+
 const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost/job-tracker';
 mongoose.Promise = global.Promise;
 
