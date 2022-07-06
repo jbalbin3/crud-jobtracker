@@ -1,33 +1,33 @@
 # crud-jobtracker
 
-To run:
+##To run:
 
-install dependencies
+### install dependencies
 >npm install
 
-build bundle.js
+### build bundle.js
 >npm run build
 
-start mongodb server
+### start mongodb server
 >npm run mongo
 
-start server running on 4444
+### start server running on 4444
 >npm start
 
-browse to localhost:4444
+### browse to localhost:4444
 
-To add a job:
+### To add a job:
 >click on the + icon on top right
 >
-To view a job:
+### To view a job:
 >click on job row
->
-To edit or delete a job:
+
+### To edit or delete a job:
 >click on icons on the right corresponding to the desired action
 
-To delete all jobs:
+### To delete all jobs:
 >click on the selection box to the left of "Job Title" which will select all jobs and a trash/delete icon appears on the top right replacing the add icon.  Click on delete/trash icon to delete multiple jobs.
 
-Known quirks:
+### Known quirks:
 >date can be entered black when clicking clear
 >when clicking add new job, page should scroll to bottom and focus on input
