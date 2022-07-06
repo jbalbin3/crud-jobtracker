@@ -28,6 +28,9 @@
 ### To delete all jobs:
 >click on the selection box to the left of "Job Title" which will select all jobs and a trash/delete icon appears on the top right replacing the add icon.  Click on delete/trash icon to delete multiple jobs.
 
+### Notes:
+>jobs are ordered by default from newest date on top to oldest date on the bottom
+
 ### Known quirks:
 >date can be entered black when clicking clear
 >when clicking add new job, page should scroll to bottom and focus on input
