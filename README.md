@@ -22,11 +22,11 @@ To add a job:
 To view a job:
 >click on job row
 >
-To edit or delete a job: 
+To edit or delete a job:
 >click on icons on the right corresponding to the desired action
 
-In progress:
->selecting all jobs and delete icon appears on right but delete all not implemented yet
+To delete all jobs:
+>click on the selection box to the left of "Job Title" which will select all jobs and a trash/delete icon appears on the top right replacing the add icon.  Click on delete/trash icon to delete multiple jobs.
 
 Known quirks:
 >date can be entered black when clicking clear
