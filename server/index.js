@@ -1,7 +1,9 @@
-const express = require('express');
-var mongodb = require('mongodb');
-const Job = require('../database');
-require('dotenv').config()
+import express from 'express';
+import mongodb from 'mongodb';
+import Job from '../database/index.js';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 4444;

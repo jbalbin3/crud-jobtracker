@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const jobSchema = require('./schema.js');
+import mongoose from 'mongoose';
+import jobSchema from './schema.js';
 
 const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost/job-tracker';
 mongoose.Promise = global.Promise;
@@ -10,4 +10,4 @@ const db = mongoose.createConnection(mongoUri, {
 });
 const Job = db.model('Job', jobSchema);
 
-module.exports = Job;
+export default Job;
