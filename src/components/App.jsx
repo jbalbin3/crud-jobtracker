@@ -29,7 +29,6 @@ const App = () => {
       })
   }
   function updateJob(job, oldJob) {
-    console.log('job id to update',job._id);
     axios.put(`/api/jobs/${job._id}`, job)
     .then(() => {
       setJobs(prevState => {
@@ -46,11 +45,11 @@ const App = () => {
   function deleteJob(job) {
     axios.delete(`/api/jobs/${job._id}`, {params: {id: job._id}})
       .then((res) => {
-              setJobs(prevState => {
-                const jobData = [...prevState];
-                jobData.splice(jobData.indexOf(job), 1);
-                return jobData;
-              });
+        setJobs(prevState => {
+          const jobData = [...prevState];
+          jobData.splice(jobData.indexOf(job), 1);
+          return jobData;
+        });
       })
       .catch((err)=>{
         console.error('axios error deleting job', err);
