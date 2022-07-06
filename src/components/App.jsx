@@ -18,19 +18,40 @@ const App = () => {
 
   function addJob(job) {
     axios.post('/api/jobs', job)
+      .then((res) => {
+        setJobs(prevState => {
+          const jobData = [...prevState, res.data];
+          return jobData;
+        });
+      })
       .catch((err)=>{
         console.error('axios error adding job', err);
       })
   }
-  function updateJob(job) {
+  function updateJob(job, oldJob) {
+    console.log('job id to update',job._id);
     axios.put(`/api/jobs/${job._id}`, job)
+    .then(() => {
+      setJobs(prevState => {
+        const jobData = [...prevState];
+        jobData[jobData.indexOf(oldJob)] = job;
+        return jobData;
+      });
+    })
     .catch((err)=>{
       console.error('axios error updating job', err);
     })
   }
 
-  function deleteJob(id) {
-    axios.delete(`/api/jobs/${id}`, {params: {id: id}})
+  function deleteJob(job) {
+    axios.delete(`/api/jobs/${job._id}`, {params: {id: job._id}})
+      .then((res) => {
+              setJobs(prevState => {
+                const jobData = [...prevState];
+                jobData.splice(jobData.indexOf(job), 1);
+                return jobData;
+              });
+      })
       .catch((err)=>{
         console.error('axios error deleting job', err);
       })

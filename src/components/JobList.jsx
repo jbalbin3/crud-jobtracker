@@ -55,7 +55,7 @@ const JobList = ({ jobs, addJob, updateJob, deleteJob }) => {
             <h3>Company</h3>
             {job.company}
             <h3>Date Applied</h3>
-            job.date_applied
+            {job.date_applied ? job.date_applied.slice(0,10) : "" }
             <h3>Status</h3>
             {job.status}
           </div>
@@ -107,41 +107,18 @@ const JobList = ({ jobs, addJob, updateJob, deleteJob }) => {
       editable={{
         onRowAdd: newData =>
           new Promise(resolve => {
-            setTimeout(() => {
-              resolve();
-              setState(prevState => {
-                const data = [...prevState.data];
-                data.push(newData);
-                return { ...prevState, data };
-              });
-            }, 600);
+            resolve();
             addJob(newData);
           }),
         onRowUpdate: (newData, oldData) =>
           new Promise(resolve => {
-            setTimeout(() => {
-              resolve();
-              if (oldData) {
-                setState(prevState => {
-                  const data = [...prevState.data];
-                  data[data.indexOf(oldData)] = newData;
-                  return { ...prevState, data };
-                });
-              }
-            }, 600);
-            updateJob(newData)
+            resolve();
+            updateJob(newData, oldData);
           }),
         onRowDelete: oldData =>
           new Promise(resolve => {
-            setTimeout(() => {
-              resolve();
-              setState(prevState => {
-                const data = [...prevState.data];
-                data.splice(data.indexOf(oldData), 1);
-                return { ...prevState, data };
-              });
-            }, 600);
-            deleteJob(oldData._id);
+            resolve();
+            deleteJob(oldData);
           }),
       }}
     />
