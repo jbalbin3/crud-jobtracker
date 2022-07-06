@@ -1,6 +1,6 @@
 # crud-jobtracker
 
-##To run:
+## To run:
 
 ### install dependencies
 >npm install
