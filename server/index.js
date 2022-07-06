@@ -51,7 +51,6 @@ app.put('/api/jobs/:id', async (req, res) => {
 app.delete('/api/jobs/:id', async (req, res) => {
   try {
     const data = await Job.deleteOne({_id: new mongodb.ObjectId(req.params.id)});
-    console.log('delete data', data);
     res.status(200).send(data);
   } catch(error) {
     res.sendStatus(404);
@@ -63,7 +62,6 @@ app.delete('/api/jobs/:id', async (req, res) => {
 app.post('/api/deletejobs', async (req, res) => {
   try {
     const data = await Job.deleteMany({_id: {$in: req.body}});
-    console.log('delete many data', data);
     res.status(200).send(data);
   } catch(error) {
     res.sendStatus(404);
