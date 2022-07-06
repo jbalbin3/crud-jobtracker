@@ -14,61 +14,59 @@ app.use(express.json());
 app.listen((PORT), ()=> { console.log('listening on port', PORT)});
 
 // CREATE
-app.post('/api/jobs', (req, res) => {
-  var job1 = new Job(req.body);
-  job1.save((err, job)=>{
-    if (err) {
-      res.sendStatus(404);
-      return console.error('db error saving job', err);
-    }
+app.post('/api/jobs', async (req, res) => {
+  try {
+    var job1 = new Job(req.body);
+    const job = await job1.save()
     res.status(200).send(job);
-  })
+  } catch (error) {
+    res.sendStatus(404);
+    console.error('db error saving job', error);
+  }
 });
 
 // READ
-app.get('/api/jobs', (req, res) => {
-  Job.find({}).sort('-date_applied')
-    .then((data) => {
-      res.status(200).send(data);
-    })
-    .catch((err) => {
-      res.sendStatus(404);
-      console.log('error reading from database ', err);
-    });
+app.get('/api/jobs', async (req, res) => {
+  try {
+    const data = await Job.find({}).sort('-date_applied');
+    res.status(200).send(data);
+  } catch(error) {
+    res.sendStatus(404);
+    console.error('error reading from database ', error);
+  }
 });
 
 // UPDATE
-app.put('/api/jobs/:id', (req, res) => {
-  Job.findOneAndUpdate({_id: new mongodb.ObjectId(req.params.id)}, req.body)
-    .then((data) => {
-      res.status(200).send(data);
-    })
-    .catch((err) => {
-      res.sendStatus(404);
-      console.log('error updating data from database ', err);
-    });
+app.put('/api/jobs/:id', async (req, res) => {
+  try {
+    const data = await Job.findOneAndUpdate({_id: new mongodb.ObjectId(req.params.id)}, req.body);
+    res.status(200).send(data);
+  } catch(error) {
+    res.sendStatus(404);
+    console.error('error updating data from database ', error);
+  }
 });
 
 // DELETE
-app.delete('/api/jobs/:id', (req, res) => {
-  Job.deleteOne({_id: new mongodb.ObjectId(req.params.id)})
-    .then((data) => {
-      res.status(200).send(data);
-    })
-    .catch((err) => {
-      res.sendStatus(404);
-      console.log('error deleting data from database ', err);
-    });
+app.delete('/api/jobs/:id', async (req, res) => {
+  try {
+    const data = await Job.deleteOne({_id: new mongodb.ObjectId(req.params.id)});
+    console.log('delete data', data);
+    res.status(200).send(data);
+  } catch(error) {
+    res.sendStatus(404);
+    console.error('error deleting data from database ', error);
+  }
 });
 
 // DELETE MANY
-app.post('/api/deletejobs', (req, res) => {
-  Job.deleteMany({_id: {$in: req.body}})
-  .then((data) => {
+app.post('/api/deletejobs', async (req, res) => {
+  try {
+    const data = await Job.deleteMany({_id: {$in: req.body}});
+    console.log('delete many data', data);
     res.status(200).send(data);
-  })
-  .catch((err) => {
+  } catch(error) {
     res.sendStatus(404);
-    console.log('error deleting data from database ', err);
-  });
+    console.error('error deleting data from database ', error);
+  }
 });
